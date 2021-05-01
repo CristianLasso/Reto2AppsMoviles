@@ -3,4 +3,6 @@
     <string name="caja_1">Caja 1</string>
     <string name="capturar">Capturar</string>
     <string name="captura_un_pokemon">Captura un Pokemon</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
