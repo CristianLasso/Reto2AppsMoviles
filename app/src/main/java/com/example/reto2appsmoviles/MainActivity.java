@@ -10,6 +10,10 @@ import android.view.SurfaceControl;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.reto2appsmoviles.util.Constants;
+import com.example.reto2appsmoviles.util.HTTPSWebUtilDomi;
+import com.google.gson.Gson;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText name;
@@ -25,7 +29,14 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(
                 (v) -> {
                     String trainer = name.getText().toString();
-
+                    Gson gson = new Gson();
+                    String json = gson.toJson(trainer);
+                    HTTPSWebUtilDomi https = new HTTPSWebUtilDomi();
+                    new Thread(
+                            ()->{
+                                https.PUTrequest(Constants.BASEURL+"trainers/"+ trainer +".json", json );
+                            }
+                    ).start();
                     Intent intent = new Intent(this, ListActivity.class);
                     startActivity(intent);
                 }
