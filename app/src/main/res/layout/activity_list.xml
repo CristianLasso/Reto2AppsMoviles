@@ -14,16 +14,16 @@
         android:layout_marginLeft="36dp"
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
+        android:autofillHints=""
         android:ems="10"
+        android:hint="@string/captura_un_pokemon"
         android:inputType="textPersonName"
-        android:text="@string/captura_un_pokemon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.037"
-        android:autofillHints="" />
+        app:layout_constraintVertical_bias="0.037" />
 
     <Button
         android:id="@+id/capture"
