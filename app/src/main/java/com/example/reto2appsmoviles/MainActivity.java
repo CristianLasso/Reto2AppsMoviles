@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
                                 https.PUTrequest(Constants.BASEURL+"trainers/"+ trainer +".json", json );
                             }
                     ).start();
-                    Intent intent = new Intent(this, ListActivity.class);
+                    Intent intent = new Intent(this, InfoActivity.class);
+                    //Intent intent = new Intent(this, ListActivity.class);
                     startActivity(intent);
                 }
         );
