@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     HTTPSWebUtilDomi https = new HTTPSWebUtilDomi();
                     new Thread(
                             ()->{
-                                https.PUTrequest(Constants.BASEURL+"trainers/"+ trainer +".json", json );
+                                https.PUTrequest(Constants.BASEURL+ "trainers/" + trainer + ".json", json );
                             }
                     ).start();
                     Intent intent = new Intent(this, ListActivity.class);

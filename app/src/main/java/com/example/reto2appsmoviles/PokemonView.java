@@ -17,7 +17,6 @@ public class PokemonView extends RecyclerView.ViewHolder{
 
     public PokemonView(ConstraintLayout root) {
         super(root);
-        this.root = root;
         nombrePokemon = root.findViewById(R.id.nombrepokemon);
         imagenPokemon = root.findViewById(R.id.imagenpokemon);
 

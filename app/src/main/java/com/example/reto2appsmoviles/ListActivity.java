@@ -2,6 +2,8 @@ package com.example.reto2appsmoviles;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +30,8 @@ public class ListActivity extends AppCompatActivity {
     private PokemonAdapter adapter;
     private String trainer;
     private Pokemon poke;
+    private RecyclerView recycler;
+    private LinearLayoutManager llManager;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -37,13 +41,23 @@ public class ListActivity extends AppCompatActivity {
 
         capture = findViewById(R.id.capture);
         pokemonCapture = findViewById(R.id.pokemonCapure);
+
+        llManager = new LinearLayoutManager(getBaseContext());
         adapter = new PokemonAdapter();
+        recycler = findViewById(R.id.recycler);
+        recycler.setHasFixedSize(true);
+        recycler.setLayoutManager(llManager);
+        recycler.setAdapter(adapter);
+
+        trainer = getIntent().getExtras().getString("trainer");
+
+        //getPokemons();
 
         capture.setOnClickListener(
                 (v) -> {
-                    String poke = pokemonCapture.getText().toString();
                     addPokemon();
                     Toast.makeText(getBaseContext(), "Gotcha!", Toast.LENGTH_SHORT).show();
+                    System.out.println(adapter.getItemCount());
                 }
         );
 
@@ -89,7 +103,6 @@ public class ListActivity extends AppCompatActivity {
 
                         poke = new Pokemon(name, sprite, type, attack, defense, speed, hp);
 
-                        trainer = getIntent().getExtras().getString("trainer");
                         Gson gson2 = new Gson();
                         String json = gson.toJson(poke);
                         HTTPSWebUtilDomi https2 = new HTTPSWebUtilDomi();
@@ -111,6 +124,29 @@ public class ListActivity extends AppCompatActivity {
                 }
         ).start();
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void getPokemons(){
+        HTTPSWebUtilDomi https3 = new HTTPSWebUtilDomi();
+        Gson gson3 = new Gson();
+
+        new Thread(
+                () -> {
+                    String response = https3.GETrequest(Constants.BASEURL + "trainers/" + trainer + ".json");
+                    Type tipo = new TypeToken<HashMap<String, Pokemon>>() {}.getType();
+                    HashMap<String, Pokemon> loca = gson3.fromJson(response, tipo);
+
+                    loca.forEach(
+                            (key, value) -> {
+                                //PasarLos values al metodo y asignarlos al row ese
+                                adapter.addPokemon(value);
+                                runOnUiThread(() -> adapter.notifyDataSetChanged());
+                            }
+                    );
+                    runOnUiThread(() -> adapter.notifyDataSetChanged());
+                }
+        ).start();
     }
 
 }
