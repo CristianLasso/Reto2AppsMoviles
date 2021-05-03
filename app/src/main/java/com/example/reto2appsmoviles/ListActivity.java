@@ -43,7 +43,7 @@ public class ListActivity extends AppCompatActivity {
         pokemonCapture = findViewById(R.id.pokemonCapure);
 
         llManager = new LinearLayoutManager(getBaseContext());
-        adapter = new PokemonAdapter();
+        adapter = new PokemonAdapter(this);
         recycler = findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(llManager);

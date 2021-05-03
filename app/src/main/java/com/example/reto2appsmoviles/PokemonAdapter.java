@@ -1,5 +1,6 @@
 package com.example.reto2appsmoviles;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -12,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -23,9 +26,11 @@ import javax.net.ssl.HttpsURLConnection;
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonView> {
 
     private ArrayList<Pokemon> pokemons;
+    private Activity activity;
 
-    public PokemonAdapter() {
+    public PokemonAdapter(Activity activity) {
         pokemons = new ArrayList<>();
+        this.activity = activity;
     }
 
 
@@ -49,21 +54,18 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonView> {
 
     @Override
     public void onBindViewHolder(@NonNull PokemonView holder, int position) {
+
+        holder.setActivity(activity);
+
         holder.getNombrePokemon().setText(pokemons.get(position).getName());
 
         System.out.println(pokemons.get(position).getImg());
 
         //La imagen del pokemon
-        /*
-        try {
-            InputStream srt = new java.net.URL(pokemons.get(position).getImg()).openStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(srt);
-            holder.getImagenPokemon().setImageBitmap(bitmap);
-            System.out.println("SIIIIIIIIIIIIIIIIIIIIIIII");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("FFFFFFFFFF");
-        }*/
+        String url = pokemons.get(position).getImg();
+        Glide.with(activity).load(url).fitCenter().into(holder.getImagenPokemon());
+
+        holder.setPokemon(pokemons.get(position));
 
     }
 
