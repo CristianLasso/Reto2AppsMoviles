@@ -51,6 +51,7 @@ public class InfoActivity extends AppCompatActivity {
 
     public void liberar(){
         Toast.makeText(getBaseContext(), "Tu pokemon ha sido liberado...", Toast.LENGTH_SHORT).show();
+
         finish();
     }
 }
