@@ -2,9 +2,11 @@ package com.example.reto2appsmoviles;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
@@ -13,6 +15,10 @@ import android.widget.Toast;
 
 import com.example.reto2appsmoviles.util.Constants;
 import com.example.reto2appsmoviles.util.HTTPSWebUtilDomi;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,6 +31,8 @@ import java.util.HashMap;
 
 public class ListActivity extends AppCompatActivity {
 
+    public static int REQUEST_EXIT = 50;
+
     private Button capture;
     private EditText pokemonCapture;
     private PokemonAdapter adapter;
@@ -32,6 +40,8 @@ public class ListActivity extends AppCompatActivity {
     private Pokemon poke;
     private RecyclerView recycler;
     private LinearLayoutManager llManager;
+    private FirebaseDatabase mDatabase;
+    private StorageReference sDatabase;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -42,22 +52,25 @@ public class ListActivity extends AppCompatActivity {
         capture = findViewById(R.id.capture);
         pokemonCapture = findViewById(R.id.pokemonCapure);
 
+        trainer = getIntent().getExtras().getString("trainer");
+
         llManager = new LinearLayoutManager(getBaseContext());
-        adapter = new PokemonAdapter(this);
+        adapter = new PokemonAdapter(this, trainer);
         recycler = findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(llManager);
         recycler.setAdapter(adapter);
 
-        trainer = getIntent().getExtras().getString("trainer");
+        mDatabase = FirebaseDatabase.getInstance();
+        sDatabase = FirebaseStorage.getInstance().getReference();
 
-        //getPokemons();
+        getPokemons();
 
         capture.setOnClickListener(
                 (v) -> {
+                    System.out.println("El addPokemon fue llamado");
                     addPokemon();
                     Toast.makeText(getBaseContext(), "Gotcha!", Toast.LENGTH_SHORT).show();
-                    System.out.println(adapter.getItemCount());
                 }
         );
 
@@ -104,12 +117,14 @@ public class ListActivity extends AppCompatActivity {
                         poke = new Pokemon(name, sprite, type, attack, defense, speed, hp);
 
                         Gson gson2 = new Gson();
-                        String json = gson.toJson(poke);
+                        String json = gson2.toJson(poke);
                         HTTPSWebUtilDomi https2 = new HTTPSWebUtilDomi();
 
                         new Thread(
                                 ()->{
-                                    https2.PUTrequest(Constants.BASEURL+"trainers/" + trainer + "/" + poke.getName() + ".json", json );
+                                    //DatabaseReference mDatabaseReference = mDatabase.getReference();
+                                    //mDatabaseReference.child("trainers").child(trainer).push().setValue(poke, 0);
+                                    https2.PUTrequest(Constants.BASEURL+ "trainers/" + trainer + "/" + poke.getName() + ".json", json );
                                 }
                         ).start();
 
@@ -147,6 +162,18 @@ public class ListActivity extends AppCompatActivity {
                     runOnUiThread(() -> adapter.notifyDataSetChanged());
                 }
         ).start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_EXIT) {
+            if (resultCode == RESULT_OK) {
+                this.finish();
+
+            }
+        }
     }
 
 }

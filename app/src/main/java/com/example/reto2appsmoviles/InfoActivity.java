@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.reto2appsmoviles.util.Constants;
+import com.example.reto2appsmoviles.util.HTTPSWebUtilDomi;
+import com.google.gson.Gson;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -22,6 +26,7 @@ public class InfoActivity extends AppCompatActivity {
     private TextView defense;
     private TextView speed;
     private TextView hp;
+    private String trainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,8 @@ public class InfoActivity extends AppCompatActivity {
         defense.setText("Defensa: " + getIntent().getExtras().getString("defense"));
         speed.setText("Velocidad: " + getIntent().getExtras().getString("speed"));
         hp.setText("Vida: " + getIntent().getExtras().getString("hp"));
+
+        trainer = getIntent().getExtras().getString("url");
 
         String url = getIntent().getExtras().getString("img");
         Glide.with(this).load(url).fitCenter().into(img);
@@ -79,7 +86,23 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     public void liberar(){
+        System.out.println(Constants.BASEURL+ "trainers/" + trainer + "/" + name + ".json");
+
+        HTTPSWebUtilDomi https = new HTTPSWebUtilDomi();
+
+        new Thread(
+                ()->{
+                    https.DELETErequest(Constants.BASEURL+ "trainers/" + trainer + "/" + name.getText().toString() + ".json");
+                }
+        ).start();
+
         Toast.makeText(getBaseContext(), "Tu pokemon ha sido liberado...", Toast.LENGTH_SHORT).show();
+
+        setResult(RESULT_OK, null);
+
+        Intent intent = new Intent(this, ListActivity.class);
+        intent.putExtra("trainer", trainer);
+        startActivity(intent);
 
         finish();
     }

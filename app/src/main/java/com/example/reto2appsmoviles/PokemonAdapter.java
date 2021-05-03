@@ -27,10 +27,12 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonView> {
 
     private ArrayList<Pokemon> pokemons;
     private Activity activity;
+    private String trainer;
 
-    public PokemonAdapter(Activity activity) {
+    public PokemonAdapter(Activity activity, String trainer) {
         pokemons = new ArrayList<>();
         this.activity = activity;
+        this.trainer = trainer;
     }
 
 
@@ -66,6 +68,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonView> {
         Glide.with(activity).load(url).fitCenter().into(holder.getImagenPokemon());
 
         holder.setPokemon(pokemons.get(position));
+        holder.setTrainer(trainer);
 
     }
 

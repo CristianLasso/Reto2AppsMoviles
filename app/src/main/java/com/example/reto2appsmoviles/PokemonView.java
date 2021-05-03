@@ -2,6 +2,7 @@ package com.example.reto2appsmoviles;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -13,10 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PokemonView extends RecyclerView.ViewHolder{
 
+    public static int REQUEST_EXIT = 50;
+
     private ConstraintLayout root;
     private TextView nombrePokemon;
     private ImageButton imagenPokemon;
     private Pokemon pokemon;
+    private String trainer;
 
     Activity activity;
 
@@ -35,7 +39,10 @@ public class PokemonView extends RecyclerView.ViewHolder{
                     intent.putExtra("defense",pokemon.getDefense());
                     intent.putExtra("speed",pokemon.getSpeed());
                     intent.putExtra("hp",pokemon.getHp());
-                    activity.startActivity(intent);
+                    intent.putExtra("url", trainer);
+                    //activity.startActivity(intent);
+                    activity.startActivityForResult(intent, REQUEST_EXIT);
+                    //activity.finish();
                 }
         );
 
@@ -58,4 +65,6 @@ public class PokemonView extends RecyclerView.ViewHolder{
     public void setPokemon(Pokemon pokemon) { this.pokemon = pokemon; }
 
     public void setActivity(Activity activity) { this.activity = activity; }
+
+    public void setTrainer(String trainer) { this.trainer = trainer; }
 }
