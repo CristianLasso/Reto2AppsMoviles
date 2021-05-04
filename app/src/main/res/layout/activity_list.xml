@@ -64,6 +64,25 @@
         app:layout_constraintTop_toBottomOf="@+id/pokemonCapure"
         app:layout_constraintVertical_bias="0.0" />
 
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="276dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="67dp"
+        android:layout_marginLeft="67dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginRight="68dp"
+        android:queryHint="Buscar un Pokemon"
+        android:visibility="visible"
+        app:iconifiedByDefault="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/capture"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="90dp"
@@ -71,10 +90,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="115dp"
         android:layout_marginLeft="115dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="115dp"
         android:layout_marginRight="115dp"
-        android:layout_marginBottom="508dp"
+        android:layout_marginBottom="468dp"
         android:text="@string/caja_1"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -82,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/capture"
+        app:layout_constraintTop_toBottomOf="@+id/search"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
