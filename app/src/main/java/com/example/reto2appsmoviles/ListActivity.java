@@ -153,18 +153,26 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
 
         new Thread(
                 () -> {
-                    String response = https3.GETrequest(Constants.BASEURL + "trainers/" + trainer + ".json");
+                    String response = "Vojabes";
+                    response = https3.GETrequest(Constants.BASEURL + "trainers/" + trainer + ".json");
                     Type tipo = new TypeToken<HashMap<String, Pokemon>>() {}.getType();
                     HashMap<String, Pokemon> loca = gson3.fromJson(response, tipo);
+                    String json = gson3.toJson(trainer);
 
-                    loca.forEach(
-                            (key, value) -> {
-                                //PasarLos values al metodo y asignarlos al row ese
-                                adapter.addPokemon(value);
-                                runOnUiThread(() -> adapter.notifyDataSetChanged());
-                            }
-                    );
-                    runOnUiThread(() -> adapter.notifyDataSetChanged());
+                    System.out.println(response);
+
+                    if(!response.equals("null")){
+                        loca.forEach(
+                                (key, value) -> {
+                                    //PasarLos values al metodo y asignarlos al row ese
+                                    adapter.addPokemon(value);
+                                    runOnUiThread(() -> adapter.notifyDataSetChanged());
+                                }
+                        );
+                        runOnUiThread(() -> adapter.notifyDataSetChanged());
+                    }else{
+                        https3.PUTrequest(Constants.BASEURL+ "trainers/" + trainer + ".json", json );
+                    }
                 }
         ).start();
     }

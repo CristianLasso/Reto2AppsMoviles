@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         name = findViewById(R.id.name);
         login = findViewById(R.id.login);
+        trainer = "";
 
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.INTERNET,
@@ -49,20 +50,25 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(
                 (v) -> {
                     trainer = name.getText().toString();
-                    Gson gson = new Gson();
-                    String json = gson.toJson(trainer);
-                    HTTPSWebUtilDomi https = new HTTPSWebUtilDomi();
-                    new Thread(
-                            ()->{
-                                if(https.GETrequest(Constants.BASEURL + "trainers/" + trainer + ".json").equals("")){
-                                    https.PUTrequest(Constants.BASEURL + "trainers/" + trainer + ".json", json );
-                                }
 
-                            }
-                    ).start();
-                    Intent intent = new Intent(this, ListActivity.class);
-                    intent.putExtra("trainer", trainer);
-                    startActivity(intent);
+                    if(trainer.length()>3){
+                        Gson gson = new Gson();
+                        String json = gson.toJson(trainer);
+                        HTTPSWebUtilDomi https = new HTTPSWebUtilDomi();
+                        new Thread(
+                                ()->{
+                                    if(https.GETrequest(Constants.BASEURL + "trainers/" + trainer + ".json").equals("")){
+                                        https.PUTrequest(Constants.BASEURL + "trainers/" + trainer + ".json", json );
+                                    }
+
+                                }
+                        ).start();
+                        Intent intent = new Intent(this, ListActivity.class);
+                        intent.putExtra("trainer", trainer);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(getBaseContext(), "Tu nombre es demasiado corto para continuar!", Toast.LENGTH_LONG).show();
+                    }
                 }
         );
 
